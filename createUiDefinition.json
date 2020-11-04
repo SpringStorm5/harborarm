@@ -154,7 +154,6 @@
             "location": "[location()]",
             "vmName": "[basics('vmName')]",
             "adminUsername": "[basics('adminUsername')]",
-            "adminPassword": "[basics('adminPassword')]",
             "authenticationType": "[basics('SSHCredentials').authenticationType]",
             "adminPasswordOrKey": "[coalesce(basics('SSHCredentials').password, basics('SSHCredentials').sshPublicKey)]",
 
