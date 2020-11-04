@@ -1,0 +1,15 @@
+[Unit]
+Description=harbor
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/docker-compose -f docker-compose.yml up -d
+Restart=always
+# Consider creating a dedicated user for Wiki.js here:
+#User=nobody
+#Environment=NODE_ENV=production
+WorkingDirectory=/var/www/harbor/
+
+[Install]
+WantedBy=multi-user.target
