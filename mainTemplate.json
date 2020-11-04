@@ -59,6 +59,13 @@
           },
           "defaultValue": "[deployment().properties.templateLink.uri]"  //use this for the Azure marketplace
       },
+          "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated."
+      },
+      "defaultValue": ""
+    },
       "linuxConfiguration": {
       "ssh": {
         "publicKeys": [
@@ -252,11 +259,9 @@
             "typeHandlerVersion": "2.0",
             "autoUpgradeMinorVersion": true,
             "settings": { 
-            "fileUris": [
-                "[uri(variables('_artifactsLocation'), concat('scripts/harbor.sh'))]"
-
-
-            ],
+              "fileUris": [
+                "[uri(variables('_artifactsLocation'), concat('scripts/harbor.sh', variables('_artifactsLocationSasToken')))]"
+              ],
             "commandToExecute": "bash -x harbor.sh IP"
             }
         }
@@ -275,11 +280,9 @@
             "typeHandlerVersion": "2.0",
             "autoUpgradeMinorVersion": true,
             "settings": { 
-            "fileUris": [
-                "[uri(variables('_artifactsLocation'), concat('scripts/harbor.service'))]"
-
-
-            ],
+              "fileUris": [
+                "[uri(variables('_artifactsLocation'), concat('scripts/harbor.service', variables('_artifactsLocationSasToken')))]"
+              ],
             "commandToExecute": "cp harbor.service /tmp/"
             }
         }
