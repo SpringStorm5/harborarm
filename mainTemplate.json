@@ -60,7 +60,6 @@
           "defaultValue": "[deployment().properties.templateLink.uri]"  //use this for the Azure marketplace
       },
       "linuxConfiguration": {
-      "disablePasswordAuthentication": true,
       "ssh": {
         "publicKeys": [
           {
@@ -69,11 +68,12 @@
           }
         ]
       }
-         
+    }
     },
 
-    "resources": [
-            {   "apiVersion": "2019-07-01",
+     "resources": [
+  {   
+      "apiVersion": "2019-07-01",
       "name": "pid-fd0dbae0-7db3-4f79-b08c-98920ee81415",
       "type": "Microsoft.Resources/deployments",
       "properties": {
@@ -216,10 +216,8 @@
                     "osDisk": {
                         "name": "[concat(variables('vmName1'), '-OSDisk')]",
                         "caching": "ReadWrite",
-                        "createOption": "fromImage",
-                         "managedDisk": {
-                             "storageAccountType": "[variables('vmStorageAccountType')]"
-                          }
+                        "createOption": "fromImage"
+
                     }
                 },
                 "networkProfile": {
@@ -268,3 +266,4 @@
 ],
     "outputs": {}
 }
+
