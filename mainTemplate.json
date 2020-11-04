@@ -17,12 +17,24 @@
         "description": "Username for the Virtual Machine."
             }
     },
-    "adminPassword": {
+    "authenticationType": {
+      "type": "string",
+      "defaultValue": "sshPublicKey",
+      "allowedValues": [
+        "password",
+        "sshPublicKey"
+      ],
+      "metadata": {
+        "description": "Type of authentication to use on the Virtual Machine."
+      }
+    },
+    "adminPasswordOrKey": {
       "type": "securestring",
       "metadata": {
-        "description": "Password for the Virtual Machine."
-            }
-        },
+        "description": "Password or ssh key for the Virtual Machine."
+      }
+    },
+
     "vmSize": {
       "type": "string",
       "defaultValue": "Standard_A2_v2",
@@ -47,10 +59,16 @@
           },
           "defaultValue": "[deployment().properties.templateLink.uri]"  //use this for the Azure marketplace
       },
-        "harborservice": "[uri(variables('_artifactsLocation'), concat('scripts/harbor.service'))]",
-        "prepareforharbor": "[uri(variables('_artifactsLocation'), concat('scripts/prepare'))]",
-        "harborconfig": "[uri(variables('_artifactsLocation'), concat('scripts/harbor.yml'))]"
-
+      "linuxConfiguration": {
+      "disablePasswordAuthentication": true,
+      "ssh": {
+        "publicKeys": [
+          {
+            "path": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
+            "keyData": "[parameters('adminPasswordOrKey')]"
+          }
+        ]
+      }
          
     },
 
@@ -185,7 +203,8 @@
                 "osProfile": {
                     "computerName": "[variables('vmName1')]",
                     "adminUsername": "[parameters('adminUsername')]",
-                    "adminPassword": "[parameters('adminPassword')]"
+                    "adminPassword": "[parameters('adminPasswordOrKey')]",
+                    "linuxConfiguration": "[if(equals(parameters('authenticationType'), 'password'), json('null'), variables('linuxConfiguration'))]"
                 },
                 "storageProfile": {
                     "imageReference": {
