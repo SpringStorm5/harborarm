@@ -26,23 +26,7 @@
                     "required": true
                 }
             },
-            {
-                "name": "adminPassword",
-                "type": "Microsoft.Compute.CredentialsCombo",
-                "label": {
-                  "authenticationType": "Authentication type",
-                  "password": "Password",
-                  "confirmPassword": "Confirm password",
-                  "sshPublicKey": "SSH public key"
-                },
-                "toolTip": {
-                  "password": "Admin password for the virtual machines and the Active Directory domain."
-                },
-                "osPlatform": "Linux",
-                "constraints": {
-                    "required": true
-                }
-              },
+
             {
                 "name": "SSHCredentials",
                 "type": "Microsoft.Compute.CredentialsCombo",
