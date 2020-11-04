@@ -46,6 +46,7 @@
         },
     "functions": [],
     "variables": {
+        "harboruri": "[uri(variables('_artifactsLocation'), concat('scripts/harbor.sh', variables('_artifactsLocationSasToken')))]",
         "vmName1": "harbor",
         "publicIP1": "[concat(variables('vmName1'), '-PublicIP')]",
         "nsgName": "ubuntuVM-nsg",
@@ -260,33 +261,12 @@
             "autoUpgradeMinorVersion": true,
             "settings": { 
               "fileUris": [
-                "[uri(variables('_artifactsLocation'), concat('scripts/harbor.sh', variables('_artifactsLocationSasToken')))]"
+                "[variables('harboruri')]"
               ],
             "commandToExecute": "bash -x harbor.sh IP"
             }
         }
-        },
-                {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(variables('vmName1'), '/harbor.service')]",
-            "apiVersion": "2020-06-01",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[variables('vmName1')]"
-            ],
-            "properties": {
-            "publisher": "Microsoft.Azure.Extensions",
-            "type": "CustomScript",
-            "typeHandlerVersion": "2.0",
-            "autoUpgradeMinorVersion": true,
-            "settings": { 
-              "fileUris": [
-                "[uri(variables('_artifactsLocation'), concat('scripts/harbor.service', variables('_artifactsLocationSasToken')))]"
-              ],
-            "commandToExecute": "cp harbor.service /tmp/"
-            }
-        }
-        }        
+        }       
 ],
     "outputs": {}
 }
