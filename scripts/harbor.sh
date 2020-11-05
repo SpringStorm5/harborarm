@@ -21,11 +21,11 @@ mkdir -p /var/www/
 cd /var/www/
 apt-get install -y git
 git clone https://github.com/SpringStorm5/arm_azure/
-cp ./arm_azure/harbor.service /etc/systemd/system/harbor.service
-mkdir -p /opt/linnovate
-cp ./arm_azure/post.sh /opt/linnovate/post.sh
-chmod 755 /opt/linnovate/post.sh
-cp ./arm_azure/linnovate.service /etc/systemd/system/linnovate.service
+#cp ./arm_azure/harbor.service /etc/systemd/system/harbor.service
+#mkdir -p /opt/linnovate
+#cp ./arm_azure/post.sh /opt/linnovate/post.sh
+#chmod 755 /opt/linnovate/post.sh
+#cp ./arm_azure/linnovate.service /etc/systemd/system/linnovate.service
 systemctl daemon-reload
 systemctl enable harbor.service
 systemctl enable linnovate.service
@@ -148,7 +148,7 @@ echo "Clean up the input dir"
 # Clean up input dir
 rm -rf ${harbor_prepare_path}/input
 EOF
-#cp ../arm_azure/harbor.yml harbor.yml
+cp ../arm_azure/harbor.yml harbor.yml
 #cp ../arm_azure/prepare ./prepare
 cp harbor.yml.tmpl harbor.yml
 # sed -i "s/reg.mydomain.com/$IPorFQDN/g" harbor.yml
