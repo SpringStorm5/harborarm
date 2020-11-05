@@ -52,7 +52,7 @@
         "VirtualNetworkName": "ubuntuVM-VirtualNetwork",
         "interfaceName1": "[concat(variables('vmName1'), '-NetworkInterface')]",
         "subNetName": "[concat(variables('VirtualNetworkName'), '-Subnet')]",
-              "_artifactsLocation": {
+        "_artifactsLocation": {
           "type": "string",
           "metadata": {
               "description": "The base URI where artifacts required by this template are located including a trailing '/'"
