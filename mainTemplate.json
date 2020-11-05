@@ -61,7 +61,7 @@
       },
 
       "scriptName1": "harbor",
-      "scriptNameSh1": "[concat(variables('scriptName1'), '.sh')]",
+      "scriptNameSh1": "[concat('scripts/', variables('scriptName1'), '.sh')]",
       "scriptUri": "[concat(variables('_artifactsLocation'),variables('scriptNameSh1'))]",
       "linuxConfiguration": {
       "ssh": {
