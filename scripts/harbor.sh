@@ -87,7 +87,8 @@ openssl req -newkey rsa:4096 -nodes -sha256 -keyout ca.key -x509 -days 3650 -out
 openssl req -newkey rsa:4096 -nodes -sha256 -keyout ${FQDN}.key -out ${FQDN}.csr -subj "/C=US/ST=CA/L=San Francisco/O=VMware/OU=IT Department/CN=${FQDN}"
 openssl x509 -req -days 3650 -in ${FQDN}.csr -CA ca.crt -CAkey ca.key -CAcreateserial -extfile extfile.cnf -out ${FQDN}.crt
 cd /var/www/harbor/
-cat <<\EOF >> prepare.yml
+rm -rf ./prepare
+cat <<\EOF >> prepare
 #!/bin/bash
 set +e
 
@@ -148,7 +149,8 @@ echo "Clean up the input dir"
 # Clean up input dir
 rm -rf ${harbor_prepare_path}/input
 EOF
-cp ../arm_azure/harbor.yml harbor.yml
+
+#cp ../arm_azure/harbor.yml harbor.yml
 #cp ../arm_azure/prepare ./prepare
 cp harbor.yml.tmpl harbor.yml
 # sed -i "s/reg.mydomain.com/$IPorFQDN/g" harbor.yml
