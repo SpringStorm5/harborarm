@@ -52,20 +52,7 @@
         "VirtualNetworkName": "ubuntuVM-VirtualNetwork",
         "interfaceName1": "[concat(variables('vmName1'), '-NetworkInterface')]",
         "subNetName": "[concat(variables('VirtualNetworkName'), '-Subnet')]",
-        "_artifactsLocation": {
-          "type": "string",
-          "metadata": {
-              "description": "The base URI where artifacts required by this template are located including a trailing '/'"
-          },
-          "defaultValue": "https://raw.githubusercontent.com/SpringStorm5/harborarm/main/scripts/"
-      },
-          "_artifactsLocationSasToken": {
-      "type": "securestring",
-      "metadata": {
-        "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated."
-      },
-      "defaultValue": ""
-    },
+
       "scriptName1": "harbor",
       "scriptNameSh1": "[concat(variables('scriptName1'), '.sh')]",
       "scriptUri": "[concat('https://raw.githubusercontent.com/SpringStorm5/harborarm/main/scripts/',variables('scriptNameSh1'))]",
