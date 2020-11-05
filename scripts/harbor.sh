@@ -87,9 +87,70 @@ openssl req -newkey rsa:4096 -nodes -sha256 -keyout ca.key -x509 -days 3650 -out
 openssl req -newkey rsa:4096 -nodes -sha256 -keyout ${FQDN}.key -out ${FQDN}.csr -subj "/C=US/ST=CA/L=San Francisco/O=VMware/OU=IT Department/CN=${FQDN}"
 openssl x509 -req -days 3650 -in ${FQDN}.csr -CA ca.crt -CAkey ca.key -CAcreateserial -extfile extfile.cnf -out ${FQDN}.crt
 cd /var/www/harbor/
-cp ../arm_azure/harbor.yml harbor.yml
-cp ../arm_azure/prepare ./prepare
-#cp harbor.yml.tmpl harbor.yml
+cat <<\EOF >> prepare.yml
+#!/bin/bash
+set +e
+
+# If compiling source code this dir is harbor's make dir.
+# If installing harbor via pacakge, this dir is harbor's root dir.
+if [[ -n "$HARBOR_BUNDLE_DIR" ]]; then
+    harbor_prepare_path=$HARBOR_BUNDLE_DIR
+else
+    harbor_prepare_path="$( cd "$(dirname "$0")" ; pwd -P )"
+fi
+echo "prepare base dir is set to ${harbor_prepare_path}"
+data_path=$(grep '^[^#]*data_volume:' ${harbor_prepare_path}/harbor.yml | awk '{print $NF}')
+
+# If previous secretkeys exist, move it to new location
+previous_secretkey_path=/data/secretkey
+previous_defaultalias_path=/data/defaultalias
+
+if [ -f $previous_secretkey_path ]; then
+    mkdir -p $data_path/secret/keys
+    mv $previous_secretkey_path $data_path/secret/keys
+fi
+if [ -f $previous_defaultalias_path ]; then
+    mkdir -p $data_path/secret/keys
+    mv $previous_defaultalias_path $data_path/secret/keys
+fi
+
+# Clean up input dir
+rm -rf ${harbor_prepare_path}/input
+# Create a input dirs
+mkdir -p ${harbor_prepare_path}/input
+input_dir=${harbor_prepare_path}/input
+
+set -e
+
+# Copy harbor.yml to input dir
+if [[ ! "$1" =~ ^\-\- ]] && [ -f "$1" ]
+then
+    cp $1 $input_dir/harbor.yml
+else
+    cp ${harbor_prepare_path}/harbor.yml $input_dir/harbor.yml
+fi
+
+# Create secret dir
+secret_dir=${data_path}/secret
+config_dir=$harbor_prepare_path/common/config
+cert_dir=$harbor_prepare_path/data/secret/cert
+
+# Run prepare script
+docker run --rm -v $input_dir:/input:z \
+                    -v $data_path:/data:z \
+                    -v $harbor_prepare_path:/compose_location:z \
+                    -v $config_dir:/config:z \
+                    -v $secret_dir:/secret:z \
+                    -v $cert_dir:/hostfs:z \
+                    goharbor/prepare:v1.10.5 $@
+
+echo "Clean up the input dir"
+# Clean up input dir
+rm -rf ${harbor_prepare_path}/input
+EOF
+#cp ../arm_azure/harbor.yml harbor.yml
+#cp ../arm_azure/prepare ./prepare
+cp harbor.yml.tmpl harbor.yml
 # sed -i "s/reg.mydomain.com/$IPorFQDN/g" harbor.yml
 # sed -e '/port: 443$/ s/^#*/#/' -i harbor.yml
 # sed -e '/https:$/ s/^#*/#/' -i harbor.yml
