@@ -52,10 +52,17 @@
         "VirtualNetworkName": "ubuntuVM-VirtualNetwork",
         "interfaceName1": "[concat(variables('vmName1'), '-NetworkInterface')]",
         "subNetName": "[concat(variables('VirtualNetworkName'), '-Subnet')]",
+              "_artifactsLocation": {
+          "type": "string",
+          "metadata": {
+              "description": "The base URI where artifacts required by this template are located including a trailing '/'"
+          },
+          "defaultValue": "[deployment().properties.templateLink.uri]",  //use this for the Azure marketplace
+      },
 
       "scriptName1": "harbor",
       "scriptNameSh1": "[concat(variables('scriptName1'), '.sh')]",
-      "scriptUri": "[concat('https://raw.githubusercontent.com/SpringStorm5/harborarm/main/scripts/',variables('scriptNameSh1'))]",
+      "scriptUri": "[concat(variables('_artifactsLocation'),variables('scriptNameSh1'))]",
       "linuxConfiguration": {
       "ssh": {
         "publicKeys": [
