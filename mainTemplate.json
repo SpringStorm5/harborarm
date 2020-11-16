@@ -57,12 +57,14 @@
           "metadata": {
               "description": "The base URI where artifacts required by this template are located including a trailing '/'"
           },
-          "defaultValue": "[deployment().properties.templateLink.uri]"  //use this for the Azure marketplace
+          //"defaultValue": "[deployment().properties.templateLink.uri]"  //use this for the Azure marketplace
+          "defaultValue": "https://raw.githubusercontent.com/SpringStorm5/harborarm/main/"
       },
 
       "scriptName1": "harbor",
       "scriptNameSh1": "[concat('scripts/', variables('scriptName1'), '.sh')]",
       "scriptUri": "[concat(variables('_artifactsLocation'),variables('scriptNameSh1'))]",
+      "installharborTemplateurl": "https://raw.githubusercontent.com/SpringStorm5/harborarm/main/scripts/harbor.json",
       "linuxConfiguration": {
       "ssh": {
         "publicKeys": [
@@ -262,7 +264,28 @@
             "commandToExecute": "bash -x harbor.sh IP"
             }
         }
-        }       
+        },
+            {
+      "name": "copyharbortar",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName1'),'/extensions/harbor.sh')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('installharborTemplateurl')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vmName": {
+            "value": "[variables('vmName1')]"
+          }
+        }
+      }
+    }
+         
 ],
     "outputs": {}
 }

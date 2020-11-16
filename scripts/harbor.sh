@@ -67,10 +67,10 @@ echo "Docker Compose Installation done"
 
 #Install Latest Stable Harbor Release
 cd /var/www/
-HARBORVERSION=$(curl -s https://github.com/goharbor/harbor/releases/latest/download 2>&1 | grep -Po [0-9]+\.[0-9]+\.[0-9]+)
-curl -s https://api.github.com/repos/goharbor/harbor/releases/latest | grep browser_download_url | grep online | cut -d '"' -f 4 | wget -qi -
-tar xvf harbor-online-installer-v$HARBORVERSION.tgz
-cd harbor
+# HARBORVERSION=$(curl -s https://github.com/goharbor/harbor/releases/latest/download 2>&1 | grep -Po [0-9]+\.[0-9]+\.[0-9]+)
+# curl -s https://api.github.com/repos/goharbor/harbor/releases/latest | grep browser_download_url | grep online | cut -d '"' -f 4 | wget -qi -
+# tar xvf harbor-online-installer-v$HARBORVERSION.tgz
+# cd harbor
 # Create Self-Signed OpenSSL Certs
 cd /var/www/harbor/
 mkdir -p ./data/secret/cert
