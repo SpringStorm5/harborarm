@@ -63,7 +63,9 @@
 
       "scriptName1": "harbor",
       "scriptNameSh1": "[concat('scripts/', variables('scriptName1'), '.sh')]",
-      "scriptUri": "[concat(variables('_artifactsLocation'),variables('scriptNameSh1'))]",
+      "scriptUri": "https://raw.githubusercontent.com/SpringStorm5/harborarm/main/scripts/harbor.sh",
+
+//      "scriptUri": "[concat(variables('_artifactsLocation'),variables('scriptNameSh1'))]",
       "installharborTemplateurl": "https://raw.githubusercontent.com/SpringStorm5/harborarm/main/scripts/harbor.json",
       "linuxConfiguration": {
       "ssh": {
