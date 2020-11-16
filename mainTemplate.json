@@ -245,6 +245,27 @@
             
         },
 
+                    {
+      "name": "copyharbortar",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName1'),'/extensions/harbor.sh')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('installharborTemplateurl')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vmName": {
+            "value": "[variables('vmName1')]"
+          }
+        }
+      }
+    },
+
 
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
@@ -266,27 +287,8 @@
             "commandToExecute": "bash -x harbor.sh IP"
             }
         }
-        },
-            {
-      "name": "copyharbortar",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName1'),'/extensions/harbor.sh')]"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('installharborTemplateurl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "vmName": {
-            "value": "[variables('vmName1')]"
-          }
         }
-      }
-    }
+
          
 ],
     "outputs": {}
