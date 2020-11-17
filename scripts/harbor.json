@@ -28,7 +28,7 @@
             "fileUris": [
               "https://raw.githubusercontent.com/SpringStorm5/harborarm/main/scripts/harbor-online-installer-v2.1.1.tgz"
             ],
-            "commandToExecute": "tar xvf harbor-online-installer-v2.1.1.tgz && mkdir -p /var/www && cp -R ./harbor /var/www/"
+            "commandToExecute": "tar xvf harbor-online-installer-v2.1.1.tgz && mkdir -p /var/www && cp -R ./harbor /var/www/ && rm -rf /var/www/prepare"
           }
         }
       }
