@@ -327,6 +327,9 @@ EOF
 # sed -i "s/.*harbor_admin_password: Harbor12345*/harbor_admin_password: $PASS/" harbor.yml
 
 cd /var/www/harbor/
+pwd
+ls
+sleep 120
 ./install.sh --with-clair --with-chartmuseum
 docker ps
 echo -e "Harbor Installation Complete \n\nPlease log out and log in or run the command 'newgrp docker' to use Docker without sudo\n\nLogin to your harbor instance:\n docker login -u admin -p Harbor12345 $IPorFQDN"
