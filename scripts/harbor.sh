@@ -21,8 +21,6 @@ mkdir -p /var/www/
 cd /var/www/
 apt-get install -y git
 systemctl daemon-reload
-systemctl enable harbor.service
-systemctl enable linnovate.service
 apt update -y
 swapoff --all
 sed -ri '/\sswap\s/s/^#?/#/' /etc/fstab
@@ -30,10 +28,20 @@ ufw disable #Do Not Do This In Production
 echo "Housekeeping done"
 
 #Install Latest Stable Docker Release
+while [[ "$(ps aux | grep apt | grep -v grep| wc -l| xargs)" -gt "1" ]]
+do 
+    sleep 5
+    echo "starting with installation"
+done
 apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 apt-get update -y
+while [[ "$(ps aux | grep apt | grep -v grep| wc -l| xargs)" -gt "1" ]]
+do 
+    sleep 5
+    echo "starting with installation"
+done
 apt-get install -y docker-ce 
 tee /etc/docker/daemon.json >/dev/null <<EOF
 {
@@ -64,10 +72,15 @@ echo "Docker Installation done"
 # echo "Docker Compose Installation done"
 echo 'deb http://by.archive.ubuntu.com/ubuntu eoan universe' >> /etc/apt/sources.list
 sudo apt-get update
+while [[ "$(ps aux | grep apt | grep -v grep| wc -l| xargs)" -gt "1" ]]
+do 
+    sleep 5
+    echo "starting with installation"
+done
 sudo apt-get install docker-compose -y
 
 sleep 60
-Install Latest Stable Harbor Release
+#Install Latest Stable Harbor Release
 cd /var/www/
 HARBORVERSION=$(curl -s https://github.com/goharbor/harbor/releases/latest/download 2>&1 | grep -Po [0-9]+\.[0-9]+\.[0-9]+)
 curl -s https://api.github.com/repos/goharbor/harbor/releases/latest | grep browser_download_url | grep online | cut -d '"' -f 4 | wget -qi -
