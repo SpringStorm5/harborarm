@@ -62,7 +62,9 @@ echo "Docker Installation done"
 # chmod +x /usr/local/bin/docker-compose
 # ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 # echo "Docker Compose Installation done"
-sudo apt-get install docker-compose
+echo 'deb http://by.archive.ubuntu.com/ubuntu eoan universe' >> /etc/apt/sources.list
+sudo apt-get update
+sudo apt-get install docker-compose -y
 
 sleep 60
 Install Latest Stable Harbor Release
