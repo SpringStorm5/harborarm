@@ -68,8 +68,7 @@
         "VirtualNetworkName": "ubuntuVM-VirtualNetwork",
         "interfaceName1": "[concat(variables('vmName1'), '-NetworkInterface')]",
         "subNetName": "[concat(variables('VirtualNetworkName'), '-Subnet')]",
-        "scriptFileUri": "[uri(parameters('_artifactsLocation'), concat('scripts/install-rancher.sh', parameters('_artifactsLocationSasToken')))]",
-      "installharborTemplateurl": "[uri(parameters('_artifactsLocation'), concat('scripts/harbor.json', parameters('_artifactsLocationSasToken')))]",
+        "scriptFileUri": "[uri(parameters('_artifactsLocation'), concat('scripts/harbor.sh', parameters('_artifactsLocationSasToken')))]",
       "linuxConfiguration": {
       "ssh": {
         "publicKeys": [
@@ -268,27 +267,8 @@
             "commandToExecute": "bash -x harbor.sh IP"
             }
         }
-        },
-                            {
-      "name": "copyharbortar",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName1'),'/extensions/harbor.sh')]"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('installharborTemplateurl')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "vmName": {
-            "value": "[variables('vmName1')]"
-          }
         }
-      }
-    }
+
 
          
 ],
