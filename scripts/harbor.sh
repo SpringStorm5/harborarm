@@ -56,25 +56,25 @@ systemctl daemon-reload
 systemctl restart docker
 echo "Docker Installation done"
 
-#Install Latest Stable Docker Compose Release
-COMPOSEVERSION=$(curl -s https://github.com/docker/compose/releases/latest/download 2>&1 | grep -Po [0-9]+\.[0-9]+\.[0-9]+)
-curl -L "https://github.com/docker/compose/releases/download/$COMPOSEVERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-echo "Docker Compose Installation done"
-
+# #Install Latest Stable Docker Compose Release
+# COMPOSEVERSION=$(curl -s https://github.com/docker/compose/releases/latest/download 2>&1 | grep -Po [0-9]+\.[0-9]+\.[0-9]+)
+# curl -L "https://github.com/docker/compose/releases/download/$COMPOSEVERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# chmod +x /usr/local/bin/docker-compose
+# ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+# echo "Docker Compose Installation done"
+sudo apt-get install docker-compose
 
 sleep 60
-#Install Latest Stable Harbor Release
-#cd /var/www/
-# HARBORVERSION=$(curl -s https://github.com/goharbor/harbor/releases/latest/download 2>&1 | grep -Po [0-9]+\.[0-9]+\.[0-9]+)
-# curl -s https://api.github.com/repos/goharbor/harbor/releases/latest | grep browser_download_url | grep online | cut -d '"' -f 4 | wget -qi -
-#cp /var/lib/waagent/custom-script/download/1/harbor-online-installer-v2.1.1.tgz .
-#tar xvf harbor-online-installer-v2.1.1
-#tar xvf harbor-online-installer-v$HARBORVERSION.tgz
-#cd harbor
-# Create Self-Signed OpenSSL Certs
-#cd /var/www/harbor/
+Install Latest Stable Harbor Release
+cd /var/www/
+HARBORVERSION=$(curl -s https://github.com/goharbor/harbor/releases/latest/download 2>&1 | grep -Po [0-9]+\.[0-9]+\.[0-9]+)
+curl -s https://api.github.com/repos/goharbor/harbor/releases/latest | grep browser_download_url | grep online | cut -d '"' -f 4 | wget -qi -
+cp /var/lib/waagent/custom-script/download/1/harbor-online-installer-v2.1.1.tgz .
+tar xvf harbor-online-installer-v2.1.1
+tar xvf harbor-online-installer-v$HARBORVERSION.tgz
+cd harbor
+Create Self-Signed OpenSSL Certs
+cd /var/www/harbor/
 
 mkdir -p /var/www/harbor/data/secret/cert
 cd /var/www/harbor/data/secret/cert
@@ -329,7 +329,6 @@ EOF
 cd /var/www/harbor/
 pwd
 ls
-sleep 120
 ./install.sh --with-clair --with-chartmuseum
 docker ps
 echo -e "Harbor Installation Complete \n\nPlease log out and log in or run the command 'newgrp docker' to use Docker without sudo\n\nLogin to your harbor instance:\n docker login -u admin -p Harbor12345 $IPorFQDN"

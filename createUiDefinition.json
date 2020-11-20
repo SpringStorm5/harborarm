@@ -150,32 +150,14 @@
             }
         ],
         "outputs": {
-
             "location": "[location()]",
-            "vmName": "[basics('vmName')]",
             "adminUsername": "[basics('adminUsername')]",
+            "vmName": "[basics('vmName')]",
             "authenticationType": "[basics('SSHCredentials').authenticationType]",
             "adminPasswordOrKey": "[coalesce(basics('SSHCredentials').password, basics('SSHCredentials').sshPublicKey)]",
+            "dnsNameforLBIP": "[steps('vmCredentials').dnsNameforLBIP.domainNameLabel]",
+            "vmSize": "[steps('vmCredentials').vmSize]"
 
-            "vmSize": "[steps('VirtualMachineConfig').vmSize]",
-            "storageNewOrExisting": "[steps('VirtualMachineConfig').storageAccount.newOrExisting]",
-            "storageAccountName": "[steps('VirtualMachineConfig').storageAccount.name]",
-            "storageAccountType": "[steps('VirtualMachineConfig').storageAccount.type]",
-            "storageAccountResourceGroupName": "[steps('VirtualMachineConfig').storageAccount.resourceGroup]",
-
-            "virtualNetworkNewOrExisting": "[steps('VirtualMachineConfig').virtualNetwork.newOrExisting]",
-            "virtualNetworkName": "[steps('VirtualMachineConfig').virtualNetwork.name]",
-            "addressPrefixes": "[steps('VirtualMachineConfig').virtualNetwork.addressPrefixes]",
-            "subnetName": "[steps('VirtualMachineConfig').virtualNetwork.subnets.subnet1.name]",
-            "subnetPrefix": "[steps('VirtualMachineConfig').virtualNetwork.subnets.subnet1.addressPrefix]",
-            "virtualNetworkResourceGroupName": "[steps('VirtualMachineConfig').virtualNetwork.resourceGroup]",
-
-            "publicIpNewOrExisting": "[steps('VirtualMachineConfig').publicIpAddress.newOrExistingOrNone]",
-            "publicIpName": "[steps('VirtualMachineConfig').publicIpAddress.name]",
-            "publicIpDns": "[steps('VirtualMachineConfig').publicIpAddress.domainNameLabel]",
-            "publicIpResourceGroupName": "[steps('VirtualMachineConfig').publicIpAddress.resourceGroup]",
-            "publicIPAllocationMethod": "[steps('VirtualMachineConfig').publicIpAddress.publicIPAllocationMethod]",
-            "publicIpSku": "[steps('VirtualMachineConfig').publicIpAddress.sku]"
 
         }
     }

@@ -35,6 +35,22 @@
       }
     },
 
+             "_artifactsLocation": {
+          "type": "string",
+          "metadata": {
+              "description": "The base URI where artifacts required by this template are located including a trailing '/'"
+          },
+          "defaultValue": "[deployment().properties.templateLink.uri]"  //use this for the Azure marketplace
+        
+      },
+        "_artifactsLocationSasToken": {
+          "type": "securestring",
+          "metadata": {
+              "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
+          },
+          "defaultValue": ""
+      },
+
     "vmSize": {
       "type": "string",
       "defaultValue": "Standard_A2_v2",
@@ -52,21 +68,8 @@
         "VirtualNetworkName": "ubuntuVM-VirtualNetwork",
         "interfaceName1": "[concat(variables('vmName1'), '-NetworkInterface')]",
         "subNetName": "[concat(variables('VirtualNetworkName'), '-Subnet')]",
-        "_artifactsLocation": {
-          "type": "string",
-          "metadata": {
-              "description": "The base URI where artifacts required by this template are located including a trailing '/'"
-          },
-          //"defaultValue": "[deployment().properties.templateLink.uri]"  //use this for the Azure marketplace
-          "defaultValue": "https://raw.githubusercontent.com/SpringStorm5/harborarm/main/"
-      },
-
-      "scriptName1": "harbor",
-      "scriptNameSh1": "[concat('scripts/', variables('scriptName1'), '.sh')]",
-      "scriptUri": "https://raw.githubusercontent.com/SpringStorm5/harborarm/main/scripts/harbor.sh",
-
-//      "scriptUri": "[concat(variables('_artifactsLocation'),variables('scriptNameSh1'))]",
-      "installharborTemplateurl": "https://raw.githubusercontent.com/SpringStorm5/harborarm/main/scripts/harbor.json",
+        "scriptFileUri": "[uri(parameters('_artifactsLocation'), concat('scripts/install-rancher.sh', parameters('_artifactsLocationSasToken')))]",
+      "installharborTemplateurl": "[uri(parameters('_artifactsLocation'), concat('scripts/harbor.json', parameters('_artifactsLocationSasToken')))]",
       "linuxConfiguration": {
       "ssh": {
         "publicKeys": [
@@ -260,7 +263,7 @@
             "autoUpgradeMinorVersion": true,
             "settings": { 
               "fileUris": [
-                "[variables('scriptUri')]"  
+                "[variables('scriptFileUri')]"  
               ],
             "commandToExecute": "bash -x harbor.sh IP"
             }
