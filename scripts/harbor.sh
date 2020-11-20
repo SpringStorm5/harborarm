@@ -71,8 +71,6 @@ Install Latest Stable Harbor Release
 cd /var/www/
 HARBORVERSION=$(curl -s https://github.com/goharbor/harbor/releases/latest/download 2>&1 | grep -Po [0-9]+\.[0-9]+\.[0-9]+)
 curl -s https://api.github.com/repos/goharbor/harbor/releases/latest | grep browser_download_url | grep online | cut -d '"' -f 4 | wget -qi -
-cp /var/lib/waagent/custom-script/download/1/harbor-online-installer-v2.1.1.tgz .
-tar xvf harbor-online-installer-v2.1.1
 tar xvf harbor-online-installer-v$HARBORVERSION.tgz
 cd harbor
 Create Self-Signed OpenSSL Certs
